@@ -1,39 +1,82 @@
-// Constellation de données (Base de données simulée)
 const dbProducts = [
-    { id: 1, name: "Nuage Néo", color: "blanc", size: "S", height: "basse", price: 5.99, topSale: true, icon: "☁️🧦", desc: "La douceur d'un rêve numérique. Fibre ultra-légère pour vos moments de cocooning éthérés." },
-    { id: 2, name: "Abysse", color: "bleu", size: "M", height: "haute", price: 8.50, topSale: false, icon: "🌊🧦", desc: "Une plongée dans un océan de confort avec ce bleu profond et mystérieux." },
-    { id: 3, name: "Furtive Noire Mat", color: "noir", size: "L", height: "basse", price: 4.99, topSale: true, icon: "🥷🧦", desc: "Minimalisme furtif pour une discrétion absolue et un style épuré." },
-    { id: 4, name: "Néo-Rouge Éclat", color: "rouge", size: "XL", height: "haute", price: 9.99, topSale: false, icon: "🔥🧦", desc: "L'énergie pure à vos pieds. Un rouge vif qui attire tous les regards." },
-    { id: 5, name: "Pulsar Zèbre", color: "rayé", size: "M", height: "haute", price: 12.00, topSale: true, icon: "🦓🧦", desc: "L'audace graphique par excellence. Un motif pulsant pour les visionnaires." },
-    { id: 6, name: "Pulsar Blanc Mat", color: "blanc", size: "XXL", height: "haute", price: 6.50, topSale: false, icon: "⚪🧦", desc: "Le classique indémodable réinventé avec une fibre ultra-blanche et résistante." },
-    { id: 7, name: "Furtive Cyan Mat", color: "bleu", size: "S", height: "basse", price: 5.00, topSale: false, icon: "🔵🧦", desc: "Une touche de cyan discrète pour un style furtif et moderne." },
-    { id: 8, name: "Abysse Noire Mat", color: "noir", size: "XL", height: "haute", price: 8.99, topSale: false, icon: "🌙🧦", desc: "L'élégance absolue de la nuit. Parfaites pour les soirées néo-chic." }
+    { id: 1, name: "Nuage Néo", color: "blanc", size: "S", height: "basse", price: 5.99, topSale: true, icon: "☁️🧦", desc: "Douceur éthérée. Fibre ultra-légère." },
+    { id: 2, name: "Abysse", color: "bleu", size: "M", height: "haute", price: 8.50, topSale: false, icon: "🌊🧦", desc: "Bleu profond pour un confort total." },
+    { id: 3, name: "Furtive Noir", color: "noir", size: "L", height: "basse", price: 4.99, topSale: true, icon: "🥷🧦", desc: "Discrétion absolue et style épuré." },
+    { id: 4, name: "Néo-Rouge", color: "rouge", size: "XL", height: "haute", price: 9.99, topSale: false, icon: "🔥🧦", desc: "Énergie pure à vos pieds." },
+    { id: 5, name: "Pulsar Zèbre", color: "rayé", size: "M", height: "haute", price: 12.00, topSale: true, icon: "🦓🧦", desc: "Audace graphique ultime." },
+    { id: 6, name: "Blanc Mat", color: "blanc", size: "XXL", height: "haute", price: 6.50, topSale: false, icon: "⚪🧦", desc: "Classique réinventé." },
+    { id: 7, name: "Cyan Furtif", color: "bleu", size: "S", height: "basse", price: 5.00, topSale: false, icon: "🔵🧦", desc: "Touche cyan discrète." },
+    { id: 8, name: "Nuit Abysse", color: "noir", size: "XL", height: "haute", price: 8.99, topSale: false, icon: "🌙🧦", desc: "L'élégance de la nuit." }
 ];
 
-// Vérifier si on est sur la page boutique (shop.html)
 if (document.getElementById('productsGrid')) {
-
     const productsGrid = document.getElementById('productsGrid');
     const topSalesGrid = document.getElementById('topSalesGrid');
     const searchInput = document.getElementById('searchInput');
-    const colorFilter = document.getElementById('colorFilter');
-    const sizeFilter = document.getElementById('sizeFilter');
-    const heightFilter = document.getElementById('heightFilter');
-    const priceSort = document.getElementById('priceSort');
-    
-    // Éléments de la modale
     const modal = document.getElementById('productModal');
-    const closeBtn = document.querySelector('.close-btn');
     const modalDetails = document.getElementById('modalDetails');
+    const closeBtn = document.querySelector('.close-btn');
 
-    // Générer la carte produit Néon
-    function createProductCard(product) {
-        return `
-            <div class="card" onclick="openModal(${product.id})">
-                <div class="card-img">${product.icon}</div>
-                <h4>${product.name}</h4>
-                <div class="tags">${product.size} | ${product.height}</div>
-                <div class="price">${product.price.toFixed(2)} €</div>
+    let filters = { color: 'toutes', size: 'toutes', sort: 'aucun' };
+
+    function setupChips(containerId, key) {
+        const chips = document.querySelectorAll(`#${containerId} .chip`);
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelector(`#${containerId} .chip.active`).classList.remove('active');
+                chip.classList.add('active');
+                filters[key] = chip.getAttribute('data-value');
+                render();
+            });
+        });
+    }
+
+    function render() {
+        let list = dbProducts.filter(p => {
+            const matchSearch = p.name.toLowerCase().includes(searchInput.value.toLowerCase());
+            const matchColor = filters.color === 'toutes' || p.color === filters.color;
+            const matchSize = filters.size === 'toutes' || p.size === filters.size;
+            return matchSearch && matchColor && matchSize;
+        });
+
+        if (filters.sort === 'asc') list.sort((a,b) => a.price - b.price);
+        else if (filters.sort === 'desc') list.sort((a,b) => b.price - a.price);
+
+        const cardHtml = p => `
+            <div class="card" onclick="openModal(${p.id})">
+                <span class="card-img">${p.icon}</span>
+                <h3>${p.name}</h3>
+                <p style="color:var(--text-muted); font-size:0.8rem;">${p.size} | ${p.color}</p>
+                <div class="price">${p.price.toFixed(2)} €</div>
+                <button class="btn-primary">VOIR</button>
+            </div>
+        `;
+
+        productsGrid.innerHTML = list.map(cardHtml).join('');
+        topSalesGrid.innerHTML = list.filter(p => p.topSale).map(cardHtml).join('') || '<p>Aucun top vente.</p>';
+    }
+
+    window.openModal = (id) => {
+        const p = dbProducts.find(x => x.id === id);
+        modalDetails.innerHTML = `
+            <div style="font-size:5rem;">${p.icon}</div>
+            <h2 style="color:var(--accent-violet); margin:1rem 0;">${p.name}</h2>
+            <p style="color:var(--text-muted); margin-bottom:2rem;">${p.desc}</p>
+            <div class="price">${p.price.toFixed(2)} €</div>
+            <button class="btn-primary" onclick="alert('Synchronisé !')">AJOUTER AU PANIER</button>
+        `;
+        modal.classList.add('show');
+    };
+
+    closeBtn.onclick = () => modal.classList.remove('show');
+    window.onclick = e => { if(e.target == modal) modal.classList.remove('show'); };
+
+    setupChips('colorChips', 'color');
+    setupChips('sizeChips', 'size');
+    setupChips('priceChips', 'sort');
+    searchInput.addEventListener('input', render);
+    render();
+}
                 <button class="btn-primary" style="width: 100%; padding: 0.6rem; font-size: 0.95rem;">Synchroniser</button>
             </div>
         `;
