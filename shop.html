@@ -3,37 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SockShop | Boutique</title>
+    <title>SockShop - Boutique</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-transition">
     <nav>
-        <div class="logo">SOCKSHOP</div>
+        <div class="logo">SockShop 🧦</div>
         <div class="links">
-            <a href="index.html">Bio</a>
-            <a href="shop.html" class="active">Shop</a>
-            <a href="references.html">Ref</a>
+            <a href="index.html">Biographie</a>
+            <a href="shop.html" class="active">Boutique</a>
+            <a href="references.html">Références</a>
         </div>
     </nav>
 
-    <div class="shop-container">
-        <aside class="sidebar">
+    <header style="text-align: center; padding: 4rem 1rem;">
+        <h1>Nos Collections</h1>
+        <p style="color: var(--text-muted); margin-top: 1rem;">La qualité à chaque pas.</p>
+    </header>
+
+    <main class="shop-layout">
+        <aside class="filters">
             <div class="filter-group">
-                <h3>Vibe de Couleur</h3>
-                <div class="chips-wrapper" id="colorChips">
+                <label>Filtrer par Vibe</label>
+                <div class="filter-chips" id="colorChips">
                     <button class="chip active" data-value="toutes">Toutes</button>
+                    <button class="chip" data-value="rouge">Rouge</button>
+                    <button class="chip" data-value="bleu">Bleu</button>
                     <button class="chip" data-value="noir">Noir</button>
                     <button class="chip" data-value="blanc">Blanc</button>
-                    <button class="chip" data-value="bleu">Bleu</button>
-                    <button class="chip" data-value="rouge">Rouge</button>
                 </div>
             </div>
 
             <div class="filter-group">
-                <h3>Trier par Prix</h3>
-                <div class="chips-wrapper" id="priceChips">
-                    <button class="chip active" data-value="aucun">Défaut</button>
-                    <button class="chip" data-value="asc">Mini</button>
+                <label>Trier par Prix</label>
+                <div class="filter-chips" id="priceChips">
+                    <button class="chip active" data-value="aucun">Par défaut</button>
+                    <button class="chip" data-value="asc">Croissant</button>
+                    <button class="chip" data-value="desc">Décroissant</button>
+                </div>
+            </div>
+        </aside>
+
+        <section style="flex: 1;">
+            <div id="productsGrid" class="grid"></div>
+        </section>
+    </main>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modalDetails"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
                     <button class="chip" data-value="desc">Maxi</button>
                 </div>
             </div>
