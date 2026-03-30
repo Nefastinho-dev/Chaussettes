@@ -1,39 +1,70 @@
-const dbProducts = [
-    { id: 1, name: "Nuage Blanc", color: "blanc", price: 5.99, icon: "☁️", desc: "Un coton peigné d'une douceur absolue." },
-    { id: 2, name: "Océan Profond", color: "bleu", price: 8.50, icon: "🌊", desc: "Idéal pour vos sorties décontractées." },
-    { id: 3, name: "Nuit Noire", color: "noir", price: 4.99, icon: "🌙", desc: "Le basique indispensable de votre garde-robe." },
-    { id: 4, name: "Feu Éclat", color: "rouge", price: 9.99, icon: "🔥", desc: "Affirmez votre style avec ce rouge vibrant." },
-    { id: 5, name: "Zèbre Chic", color: "rayé", price: 12.00, icon: "🦓", desc: "Une touche d'originalité pour vos pieds." }
+const products = [
+    { id: 1, name: "VOID BLACK", color: "noir", price: 15, icon: "🌑", desc: "Le noir absolu pour une discrétion totale." },
+    { id: 2, name: "NEON BLUE", color: "bleu", price: 18, icon: "💠", desc: "Fibre luminescente pour les explorateurs urbains." },
+    { id: 3, name: "PURE WHITE", color: "blanc", price: 12, icon: "⚪", desc: "Minimalisme technologique pur." },
+    { id: 4, name: "CYBER RED", color: "rouge", price: 22, icon: "🧧", desc: "Énergie maximale et compression sport." },
+    { id: 5, name: "STEALTH", color: "noir", price: 25, icon: "🕶️", desc: "Édition limitée renforcée au carbone." }
 ];
 
-if (document.getElementById('productsGrid')) {
-    const grid = document.getElementById('productsGrid');
-    const modal = document.getElementById('productModal');
-    const modalDetails = document.getElementById('modalDetails');
-    const closeBtn = document.querySelector('.close-btn');
+const grid = document.getElementById('productsGrid');
+const modal = document.getElementById('productModal');
+const modalBody = document.getElementById('modalBody');
+const closeBtn = document.querySelector('.close');
 
-    let currentFilters = { color: 'toutes', sort: 'aucun' };
+let activeFilters = { color: 'toutes', sort: 'aucun' };
 
-    function render() {
-        let list = dbProducts.filter(p => currentFilters.color === 'toutes' || p.color === currentFilters.color);
-        
-        if (currentFilters.sort === 'asc') list.sort((a,b) => a.price - b.price);
-        else if (currentFilters.sort === 'desc') list.sort((a,b) => b.price - a.price);
+function displayProducts() {
+    let filtered = products.filter(p => activeFilters.color === 'toutes' || p.color === activeFilters.color);
+    
+    if (activeFilters.sort === 'asc') filtered.sort((a,b) => a.price - b.price);
+    else if (activeFilters.sort === 'desc') filtered.sort((a,b) => b.price - a.price);
 
-        grid.innerHTML = list.map(p => `
-            <div class="card" onclick="openModal(${p.id})">
-                <span class="card-img">${p.icon}</span>
-                <h3>${p.name}</h3>
-                <div class="price">${p.price.toFixed(2)} €</div>
-                <button class="btn-primary" style="margin-top:1rem; padding: 0.6rem;">Voir plus</button>
-            </div>
-        `).join('');
-    }
+    grid.innerHTML = filtered.map(p => `
+        <div class="card" onclick="openModal(${p.id})">
+            <span class="card-icon">${p.icon}</span>
+            <h3>${p.name}</h3>
+            <div class="price">${p.price} €</div>
+            <button class="btn-buy" style="padding:8px">DÉTAILS</button>
+        </div>
+    `).join('');
+}
 
-    function setupChips(containerId, key) {
-        const chips = document.querySelectorAll(`#${containerId} .chip`);
-        chips.forEach(chip => {
-            chip.addEventListener('click', () => {
+// Gestion des Chips (Filtres)
+function initChips(containerId, filterKey) {
+    const container = document.getElementById(containerId);
+    const chips = container.querySelectorAll('.chip');
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            container.querySelector('.chip.active').classList.remove('active');
+            chip.classList.add('active');
+            activeFilters[filterKey] = chip.dataset.value;
+            displayProducts();
+        });
+    });
+}
+
+window.openModal = (id) => {
+    const p = products.find(x => x.id === id);
+    modalBody.innerHTML = `
+        <div style="font-size:5rem">${p.icon}</div>
+        <h2 style="font-family:Orbitron; color:var(--accent); margin:1rem 0">${p.name}</h2>
+        <p style="color:#aaa; margin-bottom:1.5rem">${p.desc}</p>
+        <div class="price">${p.price} €</div>
+        <button class="btn-buy" onclick="alert('Transaction initiée...')">AJOUTER AU PANIER</button>
+    `;
+    modal.classList.add('show');
+};
+
+closeBtn.onclick = () => modal.classList.remove('show');
+window.onclick = (e) => { if(e.target == modal) modal.classList.remove('show'); };
+
+// Lancement
+if (grid) {
+    initChips('colorChips', 'color');
+    initChips('priceChips', 'sort');
+    displayProducts();
+}
                 document.querySelector(`#${containerId} .chip.active`).classList.remove('active');
                 chip.classList.add('active');
                 currentFilters[key] = chip.getAttribute('data-value');
