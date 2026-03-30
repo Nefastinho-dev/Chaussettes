@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SockShop - Boutique</title>
+    <title>SockShop - Accueil</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-transition">
     <nav>
         <div class="logo">SockShop 🧦</div>
         <div class="links">
-            <a href="index.html" class="active">Boutique</a>
+            <a href="index.html" class="active">Notre Histoire</a>
+            <a href="shop.html">Boutique</a>
             <a href="references.html">Nos Références</a>
-            <a href="bio.html">Notre Histoire</a>
         </div>
     </nav>
 
-    <header>
-        <h1>Trouvez la chaussette parfaite !</h1>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Rechercher des chaussettes...">
+    <main class="hero-section">
+        <div class="hero-content animate-slide-up">
+            <h1>Mettez de la joie à vos pieds ! ✨</h1>
+            <p class="subtitle">Tout a commencé avec une simple idée : pourquoi nos pieds devraient-ils s'ennuyer ?</p>
+            <p>Passionnés par le confort et le style, nous avons créé SockShop pour offrir des chaussettes de haute qualité. De la discrétion d'une socquette blanche à l'excentricité d'une chaussette haute rayée, trouvez la paire qui correspond à votre humeur.</p>
+            <a href="shop.html" class="btn-primary">Découvrir la collection</a>
         </div>
-    </header>
+        <div class="hero-image animate-fade-in">
+            <div class="floating-sock">🧦</div>
+        </div>
+    </main>
 
-    <main>
-        <aside class="filters">
-            <h3>Filtres</h3>
-            <label>Couleur:</label>
-            <select id="colorFilter">
-                <option value="toutes">Toutes</option>
-                <option value="rouge">Rouge</option>
-                <option value="bleu">Bleu</option>
-                <option value="noir">Noir</option>
-                <option value="blanc">Blanc</option>
-                <option value="rayé">Rayé</option>
+    <script src="script.js"></script>
+</body>
+</html>
             </select>
 
             <label>Taille:</label>
