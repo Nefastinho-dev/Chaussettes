@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SockShop - Boutique</title>
+    <title>SockShop - Nos Références</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-transition">
@@ -11,29 +11,50 @@
         <div class="logo">SockShop 🧦</div>
         <div class="links">
             <a href="index.html">Notre Histoire</a>
-            <a href="shop.html" class="active">Boutique</a>
-            <a href="references.html">Nos Références</a>
+            <a href="shop.html">Boutique</a>
+            <a href="references.html" class="active">Nos Références</a>
         </div>
     </nav>
 
-    <header class="shop-header animate-slide-up">
-        <h1>Trouvez la chaussette parfaite</h1>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="🔍 Rechercher (ex: rayé, bleu...)">
+    <main class="content-page glass-panel animate-slide-up">
+        <h1>Guide des styles</h1>
+        <p class="subtitle">Parce qu'à chaque occasion correspond sa chaussette.</p>
+        
+        <div class="reference-list">
+            <div class="ref-item">
+                <div class="ref-icon">🥷</div>
+                <div class="ref-text">
+                    <h3>Les Socquettes (Basses)</h3>
+                    <p>Invisibles et confortables. Le choix parfait pour vos baskets d'été.</p>
+                </div>
+            </div>
+            <div class="ref-item">
+                <div class="ref-icon">🏃</div>
+                <div class="ref-text">
+                    <h3>Les Chaussettes de Sport</h3>
+                    <p>Renforcées au talon et à la pointe pour amortir chaque pas.</p>
+                </div>
+            </div>
+            <div class="ref-item">
+                <div class="ref-icon">👔</div>
+                <div class="ref-text">
+                    <h3>Les Mi-bas (Hautes)</h3>
+                    <p>L'élégance absolue. Idéales sous un costume ou pour l'hiver.</p>
+                </div>
+            </div>
+            <div class="ref-item">
+                <div class="ref-icon">🎉</div>
+                <div class="ref-text">
+                    <h3>Les Fantaisies</h3>
+                    <p>Rayures, pois, couleurs flash... Assumez votre originalité !</p>
+                </div>
+            </div>
         </div>
-    </header>
+    </main>
 
-    <main class="shop-layout animate-fade-in">
-        <aside class="filters glass-panel">
-            <h3>Filtres</h3>
-            <div class="filter-group">
-                <label>Couleur</label>
-                <select id="colorFilter">
-                    <option value="toutes">Toutes les couleurs</option>
-                    <option value="rouge">Rouge</option>
-                    <option value="bleu">Bleu</option>
-                    <option value="noir">Noir</option>
-                    <option value="blanc">Blanc</option>
+    <script src="script.js"></script>
+</body>
+</html>
                     <option value="rayé">Rayé</option>
                 </select>
             </div>
