@@ -1,0 +1,41 @@
+* { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { margin: 0; background-color: #f9f9f9; color: #333; }
+
+/* Navigation */
+nav { background-color: #2c3e50; color: white; display: flex; justify-content: space-between; padding: 1rem 2rem; align-items: center; }
+nav .logo { font-size: 1.5rem; font-weight: bold; }
+nav a { color: white; text-decoration: none; margin-left: 1rem; opacity: 0.8; }
+nav a:hover, nav a.active { opacity: 1; font-weight: bold; border-bottom: 2px solid white; }
+
+/* En-tête / Recherche */
+header { background-color: #34495e; color: white; text-align: center; padding: 2rem; }
+.search-bar input { padding: 0.8rem; width: 60%; max-width: 400px; border-radius: 25px; border: none; font-size: 1rem; outline: none; text-align: center; }
+
+/* Layout principal */
+main { display: flex; max-width: 1200px; margin: 2rem auto; padding: 0 1rem; gap: 2rem; }
+.content-page { display: block; max-width: 800px; margin: 2rem auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+/* Filtres */
+.filters { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 250px; height: fit-content; }
+.filters label { display: block; margin-top: 1rem; font-weight: bold; font-size: 0.9rem; }
+.filters select { width: 100%; padding: 0.5rem; margin-top: 0.5rem; border-radius: 5px; border: 1px solid #ccc; }
+
+/* Grille de produits */
+.shop-content { flex: 1; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+
+/* Carte produit */
+.card { background: white; padding: 1rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
+.card:hover { transform: translateY(-5px); }
+.card-img { font-size: 4rem; margin-bottom: 1rem; }
+.card h4 { margin: 0.5rem 0; color: #2c3e50; }
+.price { font-weight: bold; color: #e74c3c; font-size: 1.2rem; }
+.tags { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 1rem; }
+.btn { background: #3498db; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; width: 100%; }
+.btn:hover { background: #2980b9; }
+
+/* Responsivité */
+@media (max-width: 768px) {
+    main { flex-direction: column; }
+    .filters { width: 100%; }
+}
