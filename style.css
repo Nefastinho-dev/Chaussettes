@@ -1,20 +1,23 @@
-/* Polices : Playfair pour le côté luxe/tradition, Inter pour la clarté */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
 
 :root {
-    --bg-main: #FAFAFA; /* Blanc cassé très doux */
-    --bg-card: #FFFFFF; /* Blanc pur pour les éléments */
-    --primary-green: #2A4B3C; /* Vert sapin/sauge profond */
-    --accent-gold: #C5A059; /* Doré doux et luxueux */
-    --accent-gold-light: #E8D8B0;
+    --bg-main: #F4F6F4; /* Un blanc très légèrement teinté de vert/gris pour la douceur */
+    --bg-card: #FFFFFF;
+    
+    --primary-green: #1A3C2B; /* Vert forêt très profond et luxueux */
+    --primary-green-light: #2A543F;
+    
+    --accent-gold: #D4AF37; /* Or classique */
+    --accent-gold-light: #F3E5AB;
     
     --text-dark: #1A1A1A;
-    --text-muted: #666666;
+    --text-muted: #5A6960; /* Gris-vert pour les textes secondaires */
     
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
-    --shadow-hover: 0 15px 40px rgba(42, 75, 60, 0.08);
-    --border: 1px solid #EAEAEA;
+    --shadow-soft: 0 10px 30px rgba(26, 60, 43, 0.06);
+    --shadow-gold: 0 10px 30px rgba(212, 175, 55, 0.15);
+    
     --border-gold: 1px solid var(--accent-gold);
+    --border-green: 1px solid rgba(26, 60, 43, 0.1);
     
     --radius: 12px;
     --transition: all 0.3s ease;
@@ -25,15 +28,145 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
+/* --- TEXTURE COTON / MAILLE EN FOND --- */
 body { 
     background-color: var(--bg-main); 
     color: var(--text-dark); 
     font-family: var(--font-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    /* Création du motif "tissu/maille" avec du CSS pur */
+    background-image: 
+        repeating-linear-gradient(45deg, rgba(26,60,43,0.02) 0, rgba(26,60,43,0.02) 1.5px, transparent 1.5px, transparent 5px),
+        repeating-linear-gradient(-45deg, rgba(26,60,43,0.02) 0, rgba(26,60,43,0.02) 1.5px, transparent 1.5px, transparent 5px);
 }
 
 /* Animations */
+.page-transition { animation: fadeIn 0.8s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Typographie */
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; color: var(--primary-green); }
+h1 { font-size: 3rem; margin-bottom: 1rem; }
+h2 { font-size: 2rem; }
+
+/* --- Navigation (Désormais en Vert & Or) --- */
+nav {
+    background: var(--primary-green);
+    padding: 1.2rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 3px solid var(--accent-gold);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+nav .logo { 
+    font-family: var(--font-heading);
+    font-size: 1.8rem; font-weight: 700; 
+    color: #FFFFFF;
+    letter-spacing: 1px;
+}
+nav .logo span { color: var(--accent-gold); font-style: italic; }
+nav a { 
+    color: #FFFFFF; text-decoration: none; 
+    margin-left: 2.5rem; font-weight: 400; font-size: 0.95rem;
+    transition: var(--transition); position: relative; 
+}
+nav a:hover, nav a.active { color: var(--accent-gold); }
+nav a::after {
+    content: ''; position: absolute; width: 0; height: 1px;
+    background: var(--accent-gold); bottom: -4px; left: 0;
+    transition: var(--transition);
+}
+nav a:hover::after, nav a.active::after { width: 100%; }
+
+/* --- Boutons Luxe --- */
+.btn-primary {
+    display: inline-block; 
+    background: var(--primary-green);
+    color: var(--accent-gold); 
+    padding: 1rem 2.5rem; border-radius: 40px; border: var(--border-gold);
+    font-family: var(--font-body); font-weight: 500; letter-spacing: 0.5px;
+    cursor: pointer; transition: var(--transition); text-decoration: none;
+    box-shadow: var(--shadow-soft);
+}
+.btn-primary:hover { 
+    background: var(--accent-gold); color: var(--primary-green);
+    box-shadow: var(--shadow-gold); transform: translateY(-2px);
+}
+
+/* --- Hero Section (Accueil) --- */
+.hero-section { display: flex; align-items: center; justify-content: space-between; min-height: 80vh; padding: 0 10%; gap: 4rem; }
+.hero-content { flex: 1; max-width: 600px; }
+.hero-content .subtitle { font-size: 1.2rem; color: var(--accent-gold); font-style: italic; font-family: var(--font-heading); margin-bottom: 1rem; }
+.hero-content p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+.hero-image { 
+    flex: 1; display: flex; justify-content: center; 
+    background: var(--bg-card); padding: 4rem; border-radius: 50%;
+    box-shadow: var(--shadow-gold); border: 2px solid var(--accent-gold);
+}
+.floating-sock { font-size: 8rem; animation: float 6s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+/* --- Boutique & Recherche --- */
+.shop-header { text-align: center; padding: 4rem 2rem 2rem; }
+.search-bar { margin-top: 2rem; display: flex; justify-content: center; }
+.search-bar input {
+    padding: 1rem 1.5rem; width: 100%; max-width: 500px;
+    border-radius: 30px; border: var(--border-green);
+    font-size: 1rem; font-family: var(--font-body);
+    box-shadow: var(--shadow-soft); transition: var(--transition);
+}
+.search-bar input:focus { border: var(--border-gold); box-shadow: var(--shadow-gold); }
+
+/* --- Filtres --- */
+.shop-layout { display: flex; max-width: 1400px; margin: 0 auto 5rem; padding: 0 5%; gap: 4rem; }
+.filters { 
+    width: 280px; padding: 2rem; background: var(--bg-card); 
+    border-radius: var(--radius); box-shadow: var(--shadow-soft);
+    height: fit-content; position: sticky; top: 100px; border: var(--border-gold);
+}
+.filters h3 { font-size: 1.2rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--accent-gold-light); padding-bottom: 0.5rem; color: var(--primary-green); }
+.filter-group { margin-bottom: 1.5rem; }
+.filter-group label { display: block; font-size: 0.85rem; color: var(--primary-green); font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.filter-group select {
+    width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: var(--border-green);
+    background: var(--bg-main); color: var(--text-dark); font-family: var(--font-body); 
+    cursor: pointer; transition: var(--transition); font-size: 0.95rem;
+}
+.filter-group select:focus { border-color: var(--accent-gold); }
+
+/* --- Grille Produits --- */
+.shop-content { flex: 1; }
+.section-title { font-size: 1.8rem; margin-bottom: 2rem; color: var(--primary-green); border-left: 4px solid var(--accent-gold); padding-left: 1rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+.card {
+    background: var(--bg-card); border-radius: var(--radius); padding: 2rem; text-align: center;
+    border: var(--border-green); box-shadow: var(--shadow-soft); transition: var(--transition); cursor: pointer;
+    position: relative; overflow: hidden;
+}
+.card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent-gold); transform: scaleX(0); transition: var(--transition); }
+.card:hover::before { transform: scaleX(1); }
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-gold); border-color: var(--accent-gold); }
+.card-img { font-size: 4.5rem; margin-bottom: 1.5rem; display: block; transition: transform 0.3s; }
+.card:hover .card-img { transform: scale(1.05); }
+.card h4 { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-green); }
+.tags { font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 1rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+.price { font-weight: 600; color: var(--primary-green-light); font-size: 1.3rem; margin-bottom: 1.5rem; }
+
+/* --- Modale --- */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(26, 60, 43, 0.6); backdrop-filter: blur(5px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+.modal.show { display: flex; opacity: 1; }
+.modal-content { background: var(--bg-card); padding: 3rem; border-radius: var(--radius); width: 90%; max-width: 500px; text-align: center; position: relative; box-shadow: var(--shadow-gold); border: 2px solid var(--accent-gold); }
+.close-btn { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: var(--text-muted); cursor: pointer; }
+.close-btn:hover { color: var(--accent-gold); }
+
+@media (max-width: 900px) {
+    .hero-section { flex-direction: column; text-align: center; padding: 4rem 5%; }
+    .shop-layout { flex-direction: column; }
+    .filters { width: 100%; position: static; }
+    nav { flex-direction: column; gap: 1rem; }
+    nav a { margin: 0 1rem; }
+}
 .page-transition { animation: fadeIn 0.8s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
