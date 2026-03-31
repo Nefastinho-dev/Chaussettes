@@ -1001,3 +1001,26 @@ nav a:hover::after, nav a.active::after { width: 100%; }
     main { flex-direction: column; }
     .filters { width: 100%; }
 }
+/* --- Styles des Catégories Groupées --- */
+.category-section {
+    margin-bottom: 4rem;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.category-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Ligne dorée élégante après le titre */
+.category-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--accent-gold), transparent);
+}
