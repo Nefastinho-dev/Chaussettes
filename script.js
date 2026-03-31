@@ -1,4 +1,3 @@
-// La Collection Chaussettes Roussettes
 const dbProducts = [
     { id: 1, name: "L'Émeraude", color: "vert", size: "S", height: "haute", price: 18.00, topSale: true, icon: "🌿🧦", desc: "Notre signature. Un vert sapin profond tissé dans un coton bio d'une douceur absolue." },
     { id: 2, name: "Nuage de Lait", color: "blanc", size: "M", height: "basse", price: 15.50, topSale: false, icon: "☁️🧦", desc: "La pureté incarnée. Une socquette légère, idéale pour vos moments de détente." },
@@ -34,6 +33,65 @@ if (document.getElementById('productsGrid')) {
             </div>
         `;
     }
+
+    function renderProducts() {
+        let filtered = [...dbProducts];
+
+        const searchTerm = searchInput.value.toLowerCase();
+        if (searchTerm) {
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm) || p.color.includes(searchTerm));
+        }
+
+        if (colorFilter.value !== 'toutes') filtered = filtered.filter(p => p.color === colorFilter.value);
+        if (sizeFilter.value !== 'toutes') filtered = filtered.filter(p => p.size === sizeFilter.value);
+        if (heightFilter.value !== 'toutes') filtered = filtered.filter(p => p.height === heightFilter.value);
+
+        if (priceSort.value === 'asc') filtered.sort((a, b) => a.price - b.price);
+        else if (priceSort.value === 'desc') filtered.sort((a, b) => b.price - a.price);
+
+        productsGrid.style.opacity = 0;
+        if(topSalesGrid) topSalesGrid.style.opacity = 0;
+
+        setTimeout(() => {
+            productsGrid.innerHTML = filtered.map(createProductCard).join('') || '<p style="color:var(--text-muted); grid-column: 1/-1;">Aucune pièce ne correspond à votre recherche.</p>';
+            
+            if(topSalesGrid) {
+                const topSellers = filtered.filter(p => p.topSale);
+                topSalesGrid.innerHTML = topSellers.length ? topSellers.map(createProductCard).join('') : '<p style="color:var(--text-muted);">Aucune suggestion pour le moment.</p>';
+                topSalesGrid.style.opacity = 1;
+            }
+            productsGrid.style.opacity = 1;
+        }, 150);
+    }
+    
+    window.openModal = function(productId) {
+        const product = dbProducts.find(p => p.id === productId);
+        modalDetails.innerHTML = `
+            <div style="font-size: 5rem; margin-bottom: 1rem;">${product.icon}</div>
+            <h2 style="margin: 1rem 0; font-size: 2rem; color: var(--primary-green); font-family: var(--font-heading);">${product.name}</h2>
+            <div class="tags" style="margin-bottom: 1.5rem; color: var(--accent-gold);">
+                Taille: ${product.size} | Style: ${product.height}
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">${product.desc}</p>
+            <div style="font-size: 1.8rem; color: var(--primary-green); font-weight: 600; margin-bottom: 2rem;">${product.price.toFixed(2)} €</div>
+            <button class="btn-primary" onclick="alert('🛍️ ${product.name} ajouté(e) à votre panier d\\'exception !')" style="width: 100%;">
+                Ajouter au panier
+            </button>
+        `;
+        modal.classList.add('show');
+    };
+
+    closeBtn.onclick = () => modal.classList.remove('show');
+    window.onclick = e => { if (e.target == modal) modal.classList.remove('show'); };
+
+    searchInput.addEventListener('input', renderProducts);
+    colorFilter.addEventListener('change', renderProducts);
+    sizeFilter.addEventListener('change', renderProducts);
+    heightFilter.addEventListener('change', renderProducts);
+    priceSort.addEventListener('change', renderProducts);
+
+    renderProducts();
+}
 
     function renderProducts() {
         let filtered = [...dbProducts];
