@@ -1,39 +1,36 @@
-<aside class="filters glass-panel">
-    <h3>Configuration Aura</h3>
-    
-    <div class="filter-group">
-        <label>Vibe</label>
-        <div class="filter-chips" id="colorChips">
-            <button class="chip active" data-value="toutes">Toutes</button>
-            <button class="chip" data-value="rouge">Rouge</button>
-            <button class="chip" data-value="bleu">Bleu</button>
-            <button class="chip" data-value="noir">Noir</button>
-            <button class="chip" data-value="blanc">Blanc</button>
-            <button class="chip" data-value="rayé">Zèbre</button>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SockShop - L'Univers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-transition">
+    <nav>
+        <div class="logo">SockShop 🧦</div>
+        <div class="links">
+            <a href="index.html" class="active">L'Univers</a>
+            <a href="shop.html">La Collection</a>
+            <a href="references.html">Guide Styles</a>
         </div>
-    </div>
+    </nav>
 
-    <div class="filter-group">
-        <label>Calibre</label>
-        <div class="filter-chips" id="sizeChips">
-            <button class="chip active" data-value="toutes">Toutes</button>
-            <button class="chip" data-value="S">S</button>
-            <button class="chip" data-value="M">M</button>
-            <button class="chip" data-value="L">L</button>
-            <button class="chip" data-value="XL">XL</button>
+    <main class="hero-section">
+        <div class="hero-content animate-slide-up">
+            <h1>Illuminez chaque pas ✨</h1>
+            <p class="subtitle">Une vision audacieuse du confort.</p>
+            <p>Tout a commencé avec une idée lumineuse : pourquoi la technique devrait-elle être ennuyeuse ?<br>SockShop réinvente le quotidien en fusionnant expertise technique et esthétique néon. De la sobriété d'un noir mat à l'éclat d'une fibre rayée, trouvez la paire qui exprime votre aura.</p>
+            <a href="shop.html" class="btn-primary">Explorer la collection</a>
         </div>
-    </div>
-
-    <div class="filter-group">
-        <label>Coupe</label>
-        <div class="filter-chips" id="heightChips">
-            <button class="chip active" data-value="toutes">Toutes</button>
-            <button class="chip" data-value="haute">Hautes</button>
-            <button class="chip" data-value="basse">Basses</button>
+        <div class="hero-image animate-fade-in">
+            <div class="floating-sock">🧦</div>
         </div>
-    </div>
+    </main>
 
-    <div class="filter-group">
+    <script src="script.js"></script>
+</body>
+</html>
         <label>Tri Valeur</label>
         <div class="filter-chips" id="priceChips">
             <button class="chip active" data-value="aucun">Auto</button>
