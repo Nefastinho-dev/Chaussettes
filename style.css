@@ -1,39 +1,174 @@
-/* Importation d'une police très moderne et épurée */
-@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;400;500;700&display=swap');
+/* Polices : Playfair pour le côté luxe/tradition, Inter pour la clarté */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap');
 
-/* Variables de couleurs - La Palette "Aurore Électrique" */
 :root {
-    --bg-deep: #10101A;
-    --bg-panel: rgba(22, 22, 37, 0.85); /* Un peu transparent pour le flou */
-    --text-main: #E0E0E0;
-    --text-muted: #888899;
+    --bg-main: #FAFAFA; /* Blanc cassé très doux */
+    --bg-card: #FFFFFF; /* Blanc pur pour les éléments */
+    --primary-green: #2A4B3C; /* Vert sapin/sauge profond */
+    --accent-gold: #C5A059; /* Doré doux et luxueux */
+    --accent-gold-light: #E8D8B0;
     
-    --accent-violet: #BD00FF;
-    --accent-cyan: #00E0FF;
+    --text-dark: #1A1A1A;
+    --text-muted: #666666;
     
-    --glow-violet: 0 0 15px rgba(189, 0, 255, 0.4);
-    --glow-cyan: 0 0 15px rgba(0, 224, 255, 0.4);
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 15px 40px rgba(42, 75, 60, 0.08);
+    --border: 1px solid #EAEAEA;
+    --border-gold: 1px solid var(--accent-gold);
     
-    --shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-    --border: 1px solid rgba(255, 255, 255, 0.06);
-    --radius-lg: 20px;
-    --radius-md: 12px;
+    --radius: 12px;
+    --transition: all 0.3s ease;
     
-    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    
-    /* Fontes */
-    --font-heading: 'Syncopate', sans-serif;
-    --font-body: 'Space Grotesk', sans-serif;
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
 }
 
-/* --- Styles de Base & Animations --- */
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
 body { 
-    background-color: var(--bg-deep); 
-    color: var(--text-main); 
+    background-color: var(--bg-main); 
+    color: var(--text-dark); 
     font-family: var(--font-body);
-    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Animations */
+.page-transition { animation: fadeIn 0.8s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Typographie */
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; color: var(--primary-green); }
+h1 { font-size: 3rem; margin-bottom: 1rem; }
+h2 { font-size: 2rem; }
+
+/* --- Navigation --- */
+nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: var(--border);
+    position: sticky; top: 0; z-index: 100;
+}
+nav .logo { 
+    font-family: var(--font-heading);
+    font-size: 1.8rem; font-weight: 700; 
+    color: var(--primary-green);
+    letter-spacing: 1px;
+}
+nav .logo span { color: var(--accent-gold); font-style: italic; }
+nav a { 
+    color: var(--text-muted); text-decoration: none; 
+    margin-left: 2.5rem; font-weight: 400; font-size: 0.95rem;
+    transition: var(--transition); position: relative; 
+}
+nav a:hover, nav a.active { color: var(--primary-green); }
+nav a::after {
+    content: ''; position: absolute; width: 0; height: 1px;
+    background: var(--accent-gold); bottom: -4px; left: 0;
+    transition: var(--transition);
+}
+nav a:hover::after, nav a.active::after { width: 100%; }
+
+/* --- Boutons --- */
+.btn-primary {
+    display: inline-block; 
+    background: var(--primary-green);
+    color: #FFF; 
+    padding: 1rem 2.5rem; border-radius: 40px; border: 1px solid var(--primary-green);
+    font-family: var(--font-body); font-weight: 500; letter-spacing: 0.5px;
+    cursor: pointer; transition: var(--transition); text-decoration: none;
+}
+.btn-primary:hover { 
+    background: #FFF; color: var(--primary-green);
+    border-color: var(--primary-green);
+    box-shadow: var(--shadow-hover);
+}
+
+/* --- Hero Section (Accueil) --- */
+.hero-section {
+    display: flex; align-items: center; justify-content: space-between;
+    min-height: 80vh; padding: 0 10%; gap: 4rem;
+}
+.hero-content { flex: 1; max-width: 600px; }
+.hero-content .subtitle { font-size: 1.2rem; color: var(--accent-gold); font-style: italic; font-family: var(--font-heading); margin-bottom: 1rem; }
+.hero-content p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2.5rem; }
+.hero-image { 
+    flex: 1; display: flex; justify-content: center; 
+    background: var(--bg-card); padding: 4rem; border-radius: 50%;
+    box-shadow: var(--shadow-soft); border: 1px solid var(--accent-gold-light);
+}
+.floating-sock { font-size: 8rem; animation: float 6s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+/* --- Header Boutique & Recherche --- */
+.shop-header { text-align: center; padding: 4rem 2rem 2rem; }
+.search-bar { margin-top: 2rem; display: flex; justify-content: center; }
+.search-bar input {
+    padding: 1rem 1.5rem; width: 100%; max-width: 500px;
+    border-radius: 30px; border: var(--border);
+    font-size: 1rem; font-family: var(--font-body);
+    box-shadow: var(--shadow-soft); transition: var(--transition);
+}
+.search-bar input:focus { border: var(--border-gold); box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1); }
+
+/* --- Layout Boutique & Filtres --- */
+.shop-layout { display: flex; max-width: 1400px; margin: 0 auto 5rem; padding: 0 5%; gap: 4rem; }
+.filters { 
+    width: 280px; padding: 2rem; background: var(--bg-card); 
+    border-radius: var(--radius); box-shadow: var(--shadow-soft);
+    height: fit-content; position: sticky; top: 120px; border: var(--border);
+}
+.filters h3 { font-size: 1.2rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--accent-gold-light); padding-bottom: 0.5rem; }
+.filter-group { margin-bottom: 1.5rem; }
+.filter-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+.filter-group select {
+    width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: var(--border);
+    background: var(--bg-main); color: var(--text-dark); font-family: var(--font-body); 
+    cursor: pointer; transition: var(--transition); font-size: 0.95rem;
+}
+.filter-group select:focus { border-color: var(--accent-gold); }
+
+/* --- Grille Produits --- */
+.shop-content { flex: 1; }
+.section-title { font-size: 1.8rem; margin-bottom: 2rem; color: var(--primary-green); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+.card {
+    background: var(--bg-card); border-radius: var(--radius); padding: 2rem; text-align: center;
+    border: var(--border); box-shadow: var(--shadow-soft); transition: var(--transition); cursor: pointer;
+}
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); border-color: var(--accent-gold-light); }
+.card-img { font-size: 4.5rem; margin-bottom: 1.5rem; display: block; transition: transform 0.3s; }
+.card:hover .card-img { transform: scale(1.05); }
+.card h4 { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-dark); }
+.tags { font-size: 0.8rem; color: var(--accent-gold); margin-bottom: 1rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+.price { font-weight: 600; color: var(--primary-green); font-size: 1.3rem; margin-bottom: 1.5rem; }
+
+/* --- Modale --- */
+.modal {
+    display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+    width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px); align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s;
+}
+.modal.show { display: flex; opacity: 1; }
+.modal-content {
+    background: var(--bg-card); padding: 3rem; border-radius: var(--radius);
+    width: 90%; max-width: 500px; text-align: center; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 1px solid var(--accent-gold-light);
+}
+.close-btn { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: var(--text-muted); cursor: pointer; }
+.close-btn:hover { color: var(--text-dark); }
+.modal-title { margin: 1rem 0; font-size: 2rem; }
+.modal-desc { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+@media (max-width: 900px) {
+    .hero-section { flex-direction: column; text-align: center; padding: 4rem 5%; }
+    .shop-layout { flex-direction: column; }
+    .filters { width: 100%; position: static; }
+    nav { flex-direction: column; gap: 1rem; }
+    nav a { margin: 0 1rem; }
+}
     line-height: 1.6;
 }
 
