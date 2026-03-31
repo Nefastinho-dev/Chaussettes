@@ -10,7 +10,7 @@ const dbProducts = [
 ];
 
 if (document.getElementById('productsGrid')) {
-    const productsGrid = document.getElementById('productsGrid');
+    const productsContainer = document.getElementById('productsGrid'); // On va tout mettre ici de façon structurée
     const topSalesGrid = document.getElementById('topSalesGrid');
     const searchInput = document.getElementById('searchInput');
     const colorFilter = document.getElementById('colorFilter');
@@ -34,6 +34,79 @@ if (document.getElementById('productsGrid')) {
         `;
     }
 
+    function renderProducts() {
+        let filtered = [...dbProducts];
+
+        // 1. Application des filtres
+        const searchTerm = searchInput.value.toLowerCase();
+        if (searchTerm) {
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm) || p.color.includes(searchTerm));
+        }
+        if (colorFilter.value !== 'toutes') filtered = filtered.filter(p => p.color === colorFilter.value);
+        if (sizeFilter.value !== 'toutes') filtered = filtered.filter(p => p.size === sizeFilter.value);
+        if (heightFilter.value !== 'toutes') filtered = filtered.filter(p => p.height === heightFilter.value);
+
+        // 2. Tri par prix
+        if (priceSort.value === 'asc') filtered.sort((a, b) => a.price - b.price);
+        else if (priceSort.value === 'desc') filtered.sort((a, b) => b.price - a.price);
+
+        // --- AFFICHAGE DES TOP SALES (Uniquement s'il n'y a pas de recherche active) ---
+        if (!searchTerm && colorFilter.value === 'toutes') {
+            const topSellers = filtered.filter(p => p.topSale);
+            topSalesGrid.parentElement.style.display = 'block';
+            topSalesGrid.innerHTML = topSellers.map(createProductCard).join('');
+        } else {
+            topSalesGrid.parentElement.style.display = 'none'; // On cache les coups de cœur si on filtre
+        }
+
+        // --- AFFICHAGE GROUPÉ PAR CATÉGORIE (COULEUR) ---
+        // On récupère uniquement les produits qui ne sont pas dans "Top Sales" pour éviter les doublons
+        // OU on affiche tout mais groupé (plus propre pour le luxe)
+        
+        const categories = [...new Set(filtered.map(p => p.color))]; // Liste des couleurs présentes
+        let finalHtml = '';
+
+        categories.forEach(cat => {
+            const catProducts = filtered.filter(p => p.color === cat);
+            const catName = cat.charAt(0).toUpperCase() + cat.slice(1);
+            
+            finalHtml += `
+                <div class="category-section">
+                    <h3 class="category-title">Nuance ${catName}</h3>
+                    <div class="grid">${catProducts.map(createProductCard).join('')}</div>
+                </div>
+            `;
+        });
+
+        productsContainer.innerHTML = finalHtml || '<p style="color:var(--text-muted); text-align:center; padding: 2rem;">Aucune pièce ne correspond à votre sélection.</p>';
+    }
+    
+    // ... (Code de la modale inchangé)
+    window.openModal = function(productId) {
+        const product = dbProducts.find(p => p.id === productId);
+        modalDetails.innerHTML = `
+            <div style="font-size: 5rem; margin-bottom: 1rem;">${product.icon}</div>
+            <h2 style="margin: 1rem 0; font-size: 2rem; color: var(--primary-green); font-family: var(--font-heading);">${product.name}</h2>
+            <div class="tags" style="margin-bottom: 1.5rem; color: var(--accent-gold);">
+                Taille: ${product.size} | Style: ${product.height}
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">${product.desc}</p>
+            <div style="font-size: 1.8rem; color: var(--primary-green); font-weight: 600; margin-bottom: 2rem;">${product.price.toFixed(2)} €</div>
+            <button class="btn-primary" onclick="alert('🛍️ ${product.name} ajouté(e) !')" style="width: 100%;">Ajouter au panier</button>
+        `;
+        modal.classList.add('show');
+    };
+
+    closeBtn.onclick = () => modal.classList.remove('show');
+    window.onclick = e => { if (e.target == modal) modal.classList.remove('show'); };
+    searchInput.addEventListener('input', renderProducts);
+    colorFilter.addEventListener('change', renderProducts);
+    sizeFilter.addEventListener('change', renderProducts);
+    heightFilter.addEventListener('change', renderProducts);
+    priceSort.addEventListener('change', renderProducts);
+
+    renderProducts();
+}
     function renderProducts() {
         let filtered = [...dbProducts];
 
