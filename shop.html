@@ -3,37 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SockShop - Boutique</title>
+    <title>SockShop - Collection Néo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="page-transition">
     <nav>
         <div class="logo">SockShop 🧦</div>
         <div class="links">
-            <a href="index.html">Biographie</a>
-            <a href="shop.html" class="active">Boutique</a>
-            <a href="references.html">Références</a>
+            <a href="index.html">L'Univers</a>
+            <a href="shop.html" class="active">La Collection</a>
+            <a href="references.html">Guide Styles</a>
         </div>
     </nav>
 
-    <header style="text-align: center; padding: 4rem 1rem;">
-        <h1>Nos Collections</h1>
-        <p style="color: var(--text-muted); margin-top: 1rem;">La qualité à chaque pas.</p>
+    <header class="shop-header animate-slide-up">
+        <h1>Votre Signature Visuelle</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher (ex: rayé, furtif...)">
+        </div>
     </header>
 
-    <main class="shop-layout">
-        <aside class="filters">
+    <main class="shop-layout animate-fade-in">
+        <aside class="filters glass-panel">
+            <h3>Filtres Aura</h3>
             <div class="filter-group">
-                <label>Filtrer par Vibe</label>
-                <div class="filter-chips" id="colorChips">
-                    <button class="chip active" data-value="toutes">Toutes</button>
-                    <button class="chip" data-value="rouge">Rouge</button>
-                    <button class="chip" data-value="bleu">Bleu</button>
-                    <button class="chip" data-value="noir">Noir</button>
-                    <button class="chip" data-value="blanc">Blanc</button>
-                </div>
+                <label>Vibe</label>
+                <select id="colorFilter">
+                    <option value="toutes">Toutes les vibes</option>
+                    <option value="rouge">Rouge Éclat</option>
+                    <option value="bleu">Bleu Profond</option>
+                    <option value="noir">Noir Mat</option>
+                    <option value="blanc">Blanc Pur</option>
+                    <option value="rayé">Zèbre Néon</option>
+                </select>
             </div>
+            <div class="filter-group">
+                <label>Calibre</label>
+                <select id="sizeFilter">
+                    <option value="toutes">Tous les calibres</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Coupe</label>
+                <select id="heightFilter">
+                    <option value="toutes">Toutes les coupes</option>
+                    <option value="haute">Hautes</option>
+                    <option value="basse">Basses</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Trier par Valeur</label>
+                <select id="priceSort">
+                    <option value="aucun">Pertinence</option>
+                    <option value="asc">Valeur croissante</option>
+                    <option value="desc">Valeur décroissante</option>
+                </select>
+            </div>
+        </aside>
 
+        <section class="shop-content">
+            <h2 class="section-title">🔥 Best Sellers Pulsars</h2>
+            <div id="topSalesGrid" class="grid"></div>
+
+            <h2 class="section-title" style="margin-top: 4rem;">Constellation Complète</h2>
+            <div id="productsGrid" class="grid"></div>
+        </section>
+    </main>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn">&times;</span>
+            <div id="modalDetails"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
             <div class="filter-group">
                 <label>Trier par Prix</label>
                 <div class="filter-chips" id="priceChips">
