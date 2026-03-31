@@ -71,6 +71,62 @@
         </aside>
 
         <section class="shop-content">
+            <div id="topSalesSection">
+                <h2 class="section-title">✨ Pièces Convoitées</h2>
+                <div id="topSalesGrid" class="grid" style="margin-bottom: 4rem;"></div>
+            </div>
+
+            <div id="productsGrid"></div>
+        </section>
+    </main>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-btn">&times;</span>
+            <div id="modalDetails"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+                    <option value="noir">Noir Absolu</option>
+                    <option value="rouge">Rouge Automnal</option>
+                    <option value="doré">Reflets Dorés</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Taille</label>
+                <select id="sizeFilter">
+                    <option value="toutes">Toutes les tailles</option>
+                    <option value="S">S (35-38)</option>
+                    <option value="M">M (39-42)</option>
+                    <option value="L">L (43-45)</option>
+                    <option value="XL">XL (46+)</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Coupe</label>
+                <select id="heightFilter">
+                    <option value="toutes">Toutes les coupes</option>
+                    <option value="haute">Classique (Haute)</option>
+                    <option value="basse">Socquette (Basse)</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Trier par</label>
+                <select id="priceSort">
+                    <option value="aucun">Nos recommandations</option>
+                    <option value="asc">Prix croissant</option>
+                    <option value="desc">Prix décroissant</option>
+                </select>
+            </div>
+        </aside>
+
+        <section class="shop-content">
             <h2 class="section-title">Pièces Convoitées</h2>
             <div id="topSalesGrid" class="grid"></div>
 
