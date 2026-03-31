@@ -1,39 +1,97 @@
 const dbProducts = [
-    { id: 1, name: "L'Émeraude", color: "vert", size: "S", height: "haute", price: 18.00, topSale: true, icon: "🌿🧦", desc: "Notre signature. Un vert sapin profond tissé dans un coton bio d'une douceur absolue." },
-    { id: 2, name: "Nuage de Lait", color: "blanc", size: "M", height: "basse", price: 15.50, topSale: false, icon: "☁️🧦", desc: "La pureté incarnée. Une socquette légère, idéale pour vos moments de détente." },
-    { id: 3, name: "Noir Fusain", color: "noir", size: "L", height: "haute", price: 16.00, topSale: true, icon: "🖋️🧦", desc: "L'élégance intemporelle. Un noir mat élégant qui s'accorde avec toutes vos tenues de soirée." },
-    { id: 4, name: "Fil d'Or", color: "doré", size: "XL", height: "haute", price: 22.00, topSale: false, icon: "✨🧦", desc: "Pour les grandes occasions. De subtils fils dorés entrelacés pour une touche de luxe discret." },
-    { id: 5, name: "L'Automnale", color: "rouge", size: "M", height: "haute", price: 17.00, topSale: true, icon: "🍁🧦", desc: "Un rouge bordeaux chaleureux, parfait pour se prélasser au coin du feu." },
-    { id: 6, name: "Blanc Crème", color: "blanc", size: "XXL", height: "haute", price: 16.50, topSale: false, icon: "🕊️🧦", desc: "Un classique revisité. Épaisse, confortable et texturée pour un maintien parfait." },
-    { id: 7, name: "Vert Sauge", color: "vert", size: "S", height: "basse", price: 14.00, topSale: false, icon: "🍵🧦", desc: "Une teinte douce et apaisante. La chaussette chill par excellence." },
-    { id: 8, name: "Nuit Étoilée", color: "noir", size: "XL", height: "haute", price: 20.00, topSale: false, icon: "🌃🧦", desc: "Un bleu-noir très profond, tissé avec soin pour les amateurs de belles matières." }
+    { id: 1, name: "L'Émeraude", color: "vert", size: "S", height: "haute", price: 18.00, topSale: true, icon: "🌿", desc: "Notre signature. Un vert sapin profond tissé dans un coton bio d'une douceur absolue." },
+    { id: 2, name: "Nuage de Lait", color: "blanc", size: "M", height: "basse", price: 15.50, topSale: false, icon: "☁️", desc: "La pureté incarnée. Une socquette légère, idéale pour vos moments de détente." },
+    { id: 3, name: "Noir Fusain", color: "noir", size: "L", height: "haute", price: 16.00, topSale: true, icon: "🖋️", desc: "L'élégance intemporelle. Un noir mat élégant qui s'accorde avec toutes vos tenues." },
+    { id: 4, name: "Fil d'Or", color: "doré", size: "XL", height: "haute", price: 22.00, topSale: false, icon: "✨", desc: "Pour les grandes occasions. De subtils fils dorés entrelacés." },
+    { id: 5, name: "L'Automnale", color: "rouge", size: "M", height: "haute", price: 17.00, topSale: true, icon: "🍁", desc: "Un rouge bordeaux chaleureux, parfait pour l'hiver." },
+    { id: 6, name: "Blanc Crème", color: "blanc", size: "L", height: "haute", price: 16.50, topSale: false, icon: "🕊️", desc: "Un classique revisité. Épaisse et confortable." },
+    { id: 7, name: "Vert Sauge", color: "vert", size: "S", height: "basse", price: 14.00, topSale: false, icon: "🍵", desc: "Une teinte douce et apaisante." },
+    { id: 8, name: "Nuit Étoilée", color: "noir", size: "XL", height: "haute", price: 20.00, topSale: false, icon: "🌃", desc: "Un noir-bleu profond pour les amateurs de belles matières." }
 ];
 
-if (document.getElementById('productsGrid')) {
-    const productsContainer = document.getElementById('productsGrid'); // On va tout mettre ici de façon structurée
-    const topSalesGrid = document.getElementById('topSalesGrid');
-    const searchInput = document.getElementById('searchInput');
-    const colorFilter = document.getElementById('colorFilter');
-    const sizeFilter = document.getElementById('sizeFilter');
-    const heightFilter = document.getElementById('heightFilter');
-    const priceSort = document.getElementById('priceSort');
-    
-    const modal = document.getElementById('productModal');
-    const closeBtn = document.querySelector('.close-btn');
-    const modalDetails = document.getElementById('modalDetails');
+function createProductCard(product) {
+    return `
+        <div class="card" onclick="openModal(${product.id})">
+            <div class="card-img">${product.icon}</div>
+            <h4>${product.name}</h4>
+            <div class="tags">${product.size} | ${product.height}</div>
+            <div class="price">${product.price.toFixed(2)} €</div>
+            <button class="btn-primary" style="width: 100%; padding: 0.6rem; font-size: 0.8rem;">DÉCOUVRIR</button>
+        </div>
+    `;
+}
 
-    function createProductCard(product) {
-        return `
-            <div class="card" onclick="openModal(${product.id})">
-                <div class="card-img">${product.icon}</div>
-                <h4>${product.name}</h4>
-                <div class="tags">${product.size} | Coupe ${product.height}</div>
-                <div class="price">${product.price.toFixed(2)} €</div>
-                <button class="btn-primary" style="width: 100%; padding: 0.6rem; font-size: 0.9rem;">Découvrir</button>
-            </div>
-        `;
+function renderProducts() {
+    const productsContainer = document.getElementById('productsGrid');
+    const topSalesGrid = document.getElementById('topSalesGrid');
+    const topSalesSection = document.getElementById('topSalesSection');
+
+    // Récupération des filtres
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const color = document.getElementById('colorFilter').value;
+    const size = document.getElementById('sizeFilter').value;
+    const height = document.getElementById('heightFilter').value;
+    const sort = document.getElementById('priceSort').value;
+
+    // 1. Filtrage
+    let filtered = dbProducts.filter(p => {
+        const matchSearch = p.name.toLowerCase().includes(searchTerm) || p.color.includes(searchTerm);
+        const matchColor = color === 'toutes' || p.color === color;
+        const matchSize = size === 'toutes' || p.size === size;
+        const matchHeight = height === 'toutes' || p.height === height;
+        return matchSearch && matchColor && matchSize && matchHeight;
+    });
+
+    // 2. Tri
+    if (sort === 'asc') filtered.sort((a, b) => a.price - b.price);
+    if (sort === 'desc') filtered.sort((a, b) => b.price - a.price);
+
+    // 3. Affichage des Top Sales (seulement si on ne filtre rien)
+    if (!searchTerm && color === 'toutes' && size === 'toutes' && height === 'toutes') {
+        topSalesSection.style.display = 'block';
+        topSalesGrid.innerHTML = filtered.filter(p => p.topSale).map(createProductCard).join('');
+    } else {
+        topSalesSection.style.display = 'none';
     }
 
+    // 4. Groupement par Catégorie (Couleur)
+    const categories = [...new Set(filtered.map(p => p.color))];
+    let finalHtml = '';
+
+    categories.forEach(cat => {
+        const catProducts = filtered.filter(p => p.color === cat);
+        finalHtml += `
+            <div class="category-section">
+                <h3 class="category-title">Nuance ${cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+                <div class="grid">${catProducts.map(createProductCard).join('')}</div>
+            </div>
+        `;
+    });
+
+    productsContainer.innerHTML = finalHtml || '<p style="text-align:center; color:var(--text-muted);">Aucun modèle ne correspond à votre recherche.</p>';
+}
+
+// Logique Modale
+window.openModal = function(id) {
+    const p = dbProducts.find(item => item.id === id);
+    const modal = document.getElementById('productModal');
+    document.getElementById('modalDetails').innerHTML = `
+        <div style="font-size: 5rem; margin-bottom: 1rem;">${p.icon}</div>
+        <h2 style="color: var(--primary-green); margin-bottom: 1rem;">${p.name}</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">${p.desc}</p>
+        <div class="price" style="font-size: 2rem; margin-bottom: 2rem;">${p.price.toFixed(2)} €</div>
+        <button class="btn-primary" onclick="alert('Ajouté au panier !')">AJOUTER AU PANIER</button>
+    `;
+    modal.classList.add('show');
+}
+
+// Initialisation des écouteurs
+document.querySelectorAll('select, input').forEach(el => el.addEventListener('change', renderProducts));
+document.getElementById('searchInput').addEventListener('input', renderProducts);
+document.querySelector('.close-btn').onclick = () => document.getElementById('productModal').classList.remove('show');
+
+// Premier rendu
+renderProducts();
     function renderProducts() {
         let filtered = [...dbProducts];
 
