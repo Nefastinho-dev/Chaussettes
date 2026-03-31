@@ -1,18 +1,16 @@
-// Constellation de données (Base de données simulée)
+// La Collection Chaussettes Roussettes
 const dbProducts = [
-    { id: 1, name: "Nuage Néo", color: "blanc", size: "S", height: "basse", price: 5.99, topSale: true, icon: "☁️🧦", desc: "La douceur d'un rêve numérique. Fibre ultra-légère pour vos moments de cocooning éthérés." },
-    { id: 2, name: "Abysse", color: "bleu", size: "M", height: "haute", price: 8.50, topSale: false, icon: "🌊🧦", desc: "Une plongée dans un océan de confort avec ce bleu profond et mystérieux." },
-    { id: 3, name: "Furtive Noire Mat", color: "noir", size: "L", height: "basse", price: 4.99, topSale: true, icon: "🥷🧦", desc: "Minimalisme furtif pour une discrétion absolue et un style épuré." },
-    { id: 4, name: "Néo-Rouge Éclat", color: "rouge", size: "XL", height: "haute", price: 9.99, topSale: false, icon: "🔥🧦", desc: "L'énergie pure à vos pieds. Un rouge vif qui attire tous les regards." },
-    { id: 5, name: "Pulsar Zèbre", color: "rayé", size: "M", height: "haute", price: 12.00, topSale: true, icon: "🦓🧦", desc: "L'audace graphique par excellence. Un motif pulsant pour les visionnaires." },
-    { id: 6, name: "Pulsar Blanc Mat", color: "blanc", size: "XXL", height: "haute", price: 6.50, topSale: false, icon: "⚪🧦", desc: "Le classique indémodable réinventé avec une fibre ultra-blanche et résistante." },
-    { id: 7, name: "Furtive Cyan Mat", color: "bleu", size: "S", height: "basse", price: 5.00, topSale: false, icon: "🔵🧦", desc: "Une touche de cyan discrète pour un style furtif et moderne." },
-    { id: 8, name: "Abysse Noire Mat", color: "noir", size: "XL", height: "haute", price: 8.99, topSale: false, icon: "🌙🧦", desc: "L'élégance absolue de la nuit. Parfaites pour les soirées néo-chic." }
+    { id: 1, name: "L'Émeraude", color: "vert", size: "S", height: "haute", price: 18.00, topSale: true, icon: "🌿🧦", desc: "Notre signature. Un vert sapin profond tissé dans un coton bio d'une douceur absolue." },
+    { id: 2, name: "Nuage de Lait", color: "blanc", size: "M", height: "basse", price: 15.50, topSale: false, icon: "☁️🧦", desc: "La pureté incarnée. Une socquette légère, idéale pour vos moments de détente." },
+    { id: 3, name: "Noir Fusain", color: "noir", size: "L", height: "haute", price: 16.00, topSale: true, icon: "🖋️🧦", desc: "L'élégance intemporelle. Un noir mat élégant qui s'accorde avec toutes vos tenues de soirée." },
+    { id: 4, name: "Fil d'Or", color: "doré", size: "XL", height: "haute", price: 22.00, topSale: false, icon: "✨🧦", desc: "Pour les grandes occasions. De subtils fils dorés entrelacés pour une touche de luxe discret." },
+    { id: 5, name: "L'Automnale", color: "rouge", size: "M", height: "haute", price: 17.00, topSale: true, icon: "🍁🧦", desc: "Un rouge bordeaux chaleureux, parfait pour se prélasser au coin du feu." },
+    { id: 6, name: "Blanc Crème", color: "blanc", size: "XXL", height: "haute", price: 16.50, topSale: false, icon: "🕊️🧦", desc: "Un classique revisité. Épaisse, confortable et texturée pour un maintien parfait." },
+    { id: 7, name: "Vert Sauge", color: "vert", size: "S", height: "basse", price: 14.00, topSale: false, icon: "🍵🧦", desc: "Une teinte douce et apaisante. La chaussette chill par excellence." },
+    { id: 8, name: "Nuit Étoilée", color: "noir", size: "XL", height: "haute", price: 20.00, topSale: false, icon: "🌃🧦", desc: "Un bleu-noir très profond, tissé avec soin pour les amateurs de belles matières." }
 ];
 
-// Vérifier si on est sur la page boutique (shop.html)
 if (document.getElementById('productsGrid')) {
-
     const productsGrid = document.getElementById('productsGrid');
     const topSalesGrid = document.getElementById('topSalesGrid');
     const searchInput = document.getElementById('searchInput');
@@ -21,19 +19,80 @@ if (document.getElementById('productsGrid')) {
     const heightFilter = document.getElementById('heightFilter');
     const priceSort = document.getElementById('priceSort');
     
-    // Éléments de la modale
     const modal = document.getElementById('productModal');
     const closeBtn = document.querySelector('.close-btn');
     const modalDetails = document.getElementById('modalDetails');
 
-    // Générer la carte produit Néon
     function createProductCard(product) {
         return `
             <div class="card" onclick="openModal(${product.id})">
                 <div class="card-img">${product.icon}</div>
                 <h4>${product.name}</h4>
-                <div class="tags">${product.size} | ${product.height}</div>
+                <div class="tags">${product.size} | Coupe ${product.height}</div>
                 <div class="price">${product.price.toFixed(2)} €</div>
+                <button class="btn-primary" style="width: 100%; padding: 0.6rem; font-size: 0.9rem;">Découvrir</button>
+            </div>
+        `;
+    }
+
+    function renderProducts() {
+        let filtered = [...dbProducts];
+
+        const searchTerm = searchInput.value.toLowerCase();
+        if (searchTerm) {
+            filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm) || p.color.includes(searchTerm));
+        }
+
+        if (colorFilter.value !== 'toutes') filtered = filtered.filter(p => p.color === colorFilter.value);
+        if (sizeFilter.value !== 'toutes') filtered = filtered.filter(p => p.size === sizeFilter.value);
+        if (heightFilter.value !== 'toutes') filtered = filtered.filter(p => p.height === heightFilter.value);
+
+        if (priceSort.value === 'asc') filtered.sort((a, b) => a.price - b.price);
+        else if (priceSort.value === 'desc') filtered.sort((a, b) => b.price - a.price);
+
+        productsGrid.style.opacity = 0;
+        if(topSalesGrid) topSalesGrid.style.opacity = 0;
+
+        setTimeout(() => {
+            productsGrid.innerHTML = filtered.map(createProductCard).join('') || '<p style="color:var(--text-muted); grid-column: 1/-1;">Aucune pièce ne correspond à votre recherche.</p>';
+            
+            if(topSalesGrid) {
+                const topSellers = filtered.filter(p => p.topSale);
+                topSalesGrid.innerHTML = topSellers.length ? topSellers.map(createProductCard).join('') : '<p style="color:var(--text-muted);">Aucune suggestion pour le moment.</p>';
+                topSalesGrid.style.opacity = 1;
+            }
+            productsGrid.style.opacity = 1;
+        }, 150);
+    }
+    
+    window.openModal = function(productId) {
+        const product = dbProducts.find(p => p.id === productId);
+        modalDetails.innerHTML = `
+            <div style="font-size: 5rem; margin-bottom: 1rem;">${product.icon}</div>
+            <h2 class="modal-title">${product.name}</h2>
+            <div class="tags" style="margin-bottom: 1.5rem; color: var(--text-muted);">
+                Taille: ${product.size} | Style: ${product.height}
+            </div>
+            <p class="modal-desc">${product.desc}</p>
+            <div style="font-size: 1.8rem; color: var(--primary-green); font-weight: 600; margin-bottom: 2rem;">${product.price.toFixed(2)} €</div>
+            <button class="btn-primary" onclick="alert('🛍️ ${product.name} ajouté(e) à votre panier d\\'exception !')" style="width: 100%;">
+                Ajouter au panier
+            </button>
+        `;
+        modal.classList.add('show');
+    };
+
+    closeBtn.onclick = () => modal.classList.remove('show');
+    window.onclick = e => { if (e.target == modal) modal.classList.remove('show'); };
+
+    searchInput.addEventListener('input', renderProducts);
+    colorFilter.addEventListener('change', renderProducts);
+    sizeFilter.addEventListener('change', renderProducts);
+    heightFilter.addEventListener('change', renderProducts);
+    priceSort.addEventListener('change', renderProducts);
+
+    renderProducts();
+}
                 <button class="btn-primary" style="width: 100%; padding: 0.6rem; font-size: 0.95rem;">Synchroniser</button>
             </div>
         `;
